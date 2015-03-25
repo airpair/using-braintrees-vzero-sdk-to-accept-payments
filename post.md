@@ -37,7 +37,7 @@ Our first task is going to be adding v.zero to this form. We can do this by open
 
 This loads Braintree's JavaScript and provides a `braintree` object that we can use to setup v.zero in this form. We can do that by adding this content underneath the `<script>` tag that we just added:
 
-```
+``` markup
 <script>  
 braintree.setup(
   "CLIENT_TOKEN_GOES_HERE",
@@ -52,7 +52,7 @@ and put it in an element with the id of `dropin`. We don't have one of these
 at the moment, but it's easy enough to add it to our form. Add it now after
 the `last_name` field in the form:
 
-```
+``` markup
 <p>
   <%= label_tag "last_name" %><br>
   <%= text_field_tag "last_name" %>
@@ -62,7 +62,7 @@ the `last_name` field in the form:
 
 The other thing that we'll need to do is replace the text of `CLIENT_TOKEN_GOES_HERE` with a real client token. These tokens are used by Braintree to verify that the requests that are being made to their API are legitimate. For this, we'll need to use the Braintree gem. The Braintree gem can be used to generate a client token by calling this code in `HomeController`'s `index` action:
 
-```
+``` ruby
 def index
   @client_token = Braintree::ClientToken.generate
 end
@@ -70,7 +70,7 @@ end
 
 We can then use this token back in `app/views/home/index.html.erb`:
 
-```
+``` markup
 <script>  
 braintree.setup(
   "<%= @client_token %.",
@@ -104,7 +104,7 @@ Click "View" underneath "Private Key" on the one key listed there and then you'l
 
 Select "Ruby" from this menu. Now we finally have what we need! Copy the content of this box from Braintree and put it into a new file in the application called `config/initializers/braintree.rb`:
 
-```
+``` ruby
 Braintree::Configuration.environment = :sandbox
 Braintree::Configuration.merchant_id = '...'
 Braintree::Configuration.public_key = '...'
@@ -143,7 +143,7 @@ Now we get to the meat of what we're doing here: processing payments with Braint
 Our first step will be to actually define the route for `POST /checkout` in
 `config/routes.rb`. We can do this by adding this route to the bottom of our routes:
 
-```
+``` ruby
 Rails.application.routes.draw do
   root to: "home#index"
 
@@ -162,7 +162,7 @@ rails g controller orders
 
 Inside this controller, let's add the `checkout` action:
 
-```
+``` ruby
 class OrdersController < ApplicationController
   def checkout
     result = Braintree::Transaction.sale(
@@ -182,7 +182,7 @@ The `Braintree::Transaction.sale` method used here takes an amount and the `paym
 
 Before we run through a successful checkout, we'll need to create the view at `app/views/orders/checkout.html.erb`. Put this content in it:
 
-```
+``` markup
 <h1>Thanks for buying my thing!</h1>
 
 <strong>You've paid $10 for it.</strong>
@@ -196,7 +196,7 @@ Great! We're now processing transactions through Braintree successfully.
 
 To see one fail, we'll need to adjust our call to `Braintree::Transaction.sale` to use an amount higher than $2,000.
 
-```
+``` ruby
 class OrdersController < ApplicationController
   def checkout
     result = Braintree::Transaction.sale(
@@ -208,7 +208,7 @@ class OrdersController < ApplicationController
 
 In Braintree's sandbox, any amount between $2,000 and 2,062.99 will return a different error depending on the dollar amount. These errors correspond with the ones listed in [Braintree's "Processor Response Codes" documentation](https://www.braintreepayments.com/docs/ruby/reference/processor_responses). By using $2,001 as the price, Braintree will tell us that the card has insufficient funds. We'll then grab this message from Braintree and display it to the user. Let's update the code again in the `checkout` action to do that:
 
-```
+``` ruby
 class OrdersController < ApplicationController
   def checkout
     result = Braintree::Transaction.sale(
