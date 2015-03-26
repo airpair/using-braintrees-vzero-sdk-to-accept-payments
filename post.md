@@ -23,7 +23,8 @@ bundle install
 
 When you start the app with `rails s` and go to http://localhost:3000, you'll see a very basic form:
 
-![Initial checkout page](braintree/initial_checkout_page.png)
+![Initial checkout page](https://raw.githubusercontent.com/airpair/using-braintrees-vzero-sdk-to-accept-payments/edit/images/initial_checkout_page.png)
+
 
 This is the form that we'll be using with Braintree's v.zero SDK and their gem.
 
@@ -96,11 +97,11 @@ The next part is not as easy: we need to setup a Braintree sandbox account and g
 
 Now you're inside your Braintree sandbox account. The configuration that we need for our client token generation to work can be found in the "Settings" -> "Users and Roles" menu near the top right of the page. From here, click on your username and scroll down to "API Keys". You should now see a screen that looks like this:
 
-![Braintree keys](braintree_keys.png)
+![Braintree keys](https://raw.githubusercontent.com/airpair/using-braintrees-vzero-sdk-to-accept-payments/edit/images/braintree_keys.png)
 
 Click "View" underneath "Private Key" on the one key listed there and then you'll be able to see the configuration settings we're after. Except they're in Java! Not to worry! If you click on "Java", it'll bring up a menu of languages to choose from:
 
-![Braintree keys menu](braintree_keys_menu.png)
+![Braintree keys menu](https://raw.githubusercontent.com/airpair/using-braintrees-vzero-sdk-to-accept-payments/edit/images/braintree_keys_menu.png)
 
 Select "Ruby" from this menu. Now we finally have what we need! Copy the content of this box from Braintree and put it into a new file in the application called `config/initializers/braintree.rb`:
 
@@ -118,7 +119,7 @@ Now that we have setup Braintree in our application, let's restart the `rails
 server` process and see the fruits of our labor. Go back to
 http://localhost:3000 and you'll now see the form.
 
-![Braintree payment form](braintree_vzero_form.png)
+![Braintree payment form](https://raw.githubusercontent.com/airpair/using-braintrees-vzero-sdk-to-accept-payments/edit/images/braintree_vzero_form.png)
 
 We've got some new fields on our page: a card number and an expiry! There's
 also a PayPal button there. This is the client-side of the v.zero API working.
@@ -132,7 +133,7 @@ what we can use to capture the payment.
 If we try to submit this form now with the first name, last name and credit
 card fields filled out, we'll see this error:
 
-![No route for checkout](no_route_for_heckout.png)
+![No route for checkout](https://raw.githubusercontent.com/airpair/using-braintrees-vzero-sdk-to-accept-payments/edit/images/no_route_for_checkout.png)
 
 Now's the time to implement that route.
 
@@ -190,7 +191,7 @@ Before we run through a successful checkout, we'll need to create the view at `a
 
 Let's run through a successful checkout now. Go to http://localhost:3000 and fill in all the fields. For the credit card number, use the test card "4242 4242 4242 4242" with an expiry date in the (near) future. When you're done here you'll see the checkout page:
 
-![Checkout page](checkout_page.png)
+![Checkout page](https://raw.githubusercontent.com/airpair/using-braintrees-vzero-sdk-to-accept-payments/edit/images/checkout_page.png)
 
 Great! We're now processing transactions through Braintree successfully.
 
@@ -229,7 +230,7 @@ The `result.message` is the key here. That'll give us the error message from Bra
 
 Run through the checkout again, and this time it will fail and show the error message:
 
-![Braintree error message](braintree_error_message)
+![Braintree error message](https://raw.githubusercontent.com/airpair/using-braintrees-vzero-sdk-to-accept-payments/edit/images/braintree_error_message.png)
 
 Now we're handling both cases that can happen when processing transactions with Braintree.
 
