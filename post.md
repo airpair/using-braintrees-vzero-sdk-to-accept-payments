@@ -101,7 +101,7 @@ Now you're inside your Braintree sandbox account. The configuration that we need
 
 Click "View" underneath "Private Key" on the one key listed there and then you'll be able to see the configuration settings we're after. Except they're in Java! Not to worry! If you click on "Java", it'll bring up a menu of languages to choose from:
 
-![Braintree keys menu](https://raw.githubusercontent.com/airpair/using-braintrees-vzero-sdk-to-accept-payments/edit/images/braintree_keys_menu.png)
+![Braintree keys menu](https://raw.githubusercontent.com/airpair/using-braintrees-vzero-sdk-to-accept-payments/edit/images/braintree_key_menu.png)
 
 Select "Ruby" from this menu. Now we finally have what we need! Copy the content of this box from Braintree and put it into a new file in the application called `config/initializers/braintree.rb`:
 
