@@ -16,7 +16,7 @@ Let's get started!
 Here's an app I've prepared earlier: https://github.com/radar/braintree_shop_demo. This is the application we'll be using for this tutorial. Clone it down and set it up with these commands:
 
 ```
-git clone git@github.com:radar/braintree_shop_demo
+git clone git@github.com:radar/braintree-vzero-demo
 cd braintree_shop_demo
 bundle install
 ```
