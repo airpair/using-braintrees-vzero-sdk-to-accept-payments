@@ -56,7 +56,7 @@ the `last_name` field in the form:
 ``` markup
 <p>
   <%= label_tag "last_name" %><br>
-  <%= text_field_tag "last_name" %>
+  <%= text_field_tag "last_name", '', class: 'form-control' %>
 </p>
 <div id="dropin"></div>
 ```
@@ -74,7 +74,7 @@ We can then use this token back in `app/views/home/index.html.erb`:
 ``` markup
 <script>  
 braintree.setup(
-  "<%= @client_token %.",
+  "<%= @client_token %>",
   'dropin', {
     container: 'dropin'
 });
@@ -158,7 +158,7 @@ in the `HomeController` really confuses what that controller does.
 Let's generate this new controller now:
 
 ```
-rails g controller orders
+rails g controller orders --no-assets
 ```
 
 Inside this controller, let's add the `checkout` action:
@@ -220,7 +220,7 @@ class OrdersController < ApplicationController
       flash[:notice] = "Payment was successful"
     else
       flash[:error] = result.message
-      redirect_to home_path
+      redirect_to root_path
     end
   end
 end
@@ -230,9 +230,34 @@ The `result.message` is the key here. That'll give us the error message from Bra
 
 Run through the checkout again, and this time it will fail and show the error message:
 
-![Braintree error message](https://raw.githubusercontent.com/airpair/using-braintrees-vzero-sdk-to-accept-payments/edit/images/braintree_error_message.png)
+![Braintree error message](https://raw.githubusercontent.com/airpair/using-braintrees-vzero-sdk-to-accept-payments/edit/images/insufficient_funds.png)
 
 Now we're handling both cases that can happen when processing transactions with Braintree.
+
+## It even works with PayPal
+
+If you have a PayPal account, go ahead and test out the flow of the checkout using that too. It'll be seamless. First of all you'll need to change the amount in `OrdersController` back to $10 if you want this transaction to be successful:
+
+```ruby
+def checkout
+  result = Braintree::Transaction.sale(
+    :amount => "10.00",
+    :payment_method_nonce => params[:payment_method_nonce]
+  )
+end
+```
+
+Run through the checkout process again, but instead of entering a credit card number, use your PayPal account. Don't worry, you won't be charged anything because we're using Braintree's sandbox environment.
+
+When you sign in with your PayPal credentials, you'll see this:
+
+![Paying with PayPal](https://raw.githubusercontent.com/airpair/using-braintrees-vzero-sdk-to-accept-payments/edit/images/paying_with_paypal.png)
+
+Clicking the "Pay $10" will post to the `OrdersController#checkout` route and Braintree will process the transaction seamlessly.
+
+![Checkout page](https://raw.githubusercontent.com/airpair/using-braintrees-vzero-sdk-to-accept-payments/edit/images/checkout_page.png)
+
+Great stuff!
 
 ## Conclusion
 
