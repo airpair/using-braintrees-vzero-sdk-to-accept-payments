@@ -87,7 +87,7 @@ However things aren't entirely that simple. We'll need to install the Braintree 
 
 To add the Braintree gem to our application, we can add this line to our `Gemfile`:
 
-```
+```ruby
 gem 'braintree'
 ```
 
