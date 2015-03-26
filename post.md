@@ -239,8 +239,3 @@ Now we're handling both cases that can happen when processing transactions with 
 Braintree provides a lot more than just this simple transaction processing. It also handles subscriptions and securely storing user's credentials so that they can re-use them on subsequent checkouts.
 
 I hope you learned something by reading this guide.
-
-* TODO:
-
-* Update app to use Bootstrap
-* Re-take screenshots
