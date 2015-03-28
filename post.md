@@ -259,6 +259,23 @@ Clicking the "Pay $10" will post to the `OrdersController#checkout` route and Br
 
 Great stuff!
 
+## Protecting your Braintree credentials
+
+One final note. Typically you wouldn't commit `config/initializers/braintree.rb` as it is now to source control, because then anyone with access to your source control would have access to these credentials. Instead, what you would do is load these settings from `ENV` variables. To do this, switch `config/initializers/braintree.rb` to this:
+
+```ruby
+Braintree::Configuration.environment = ENV['BRAINTREE_ENVIRONMENT'].to_sym
+Braintree::Configuration.merchant_id = ENV['BRAINTREE_MERCHANT_ID']
+Braintree::Configuration.public_key = ENV['BRAINTREE_PUBLIC_KEY']
+Braintree::Configuration.private_key = ENV['BRAINTREE_PRIVATE_KEY']
+```
+
+This file is safe to commit to source control because it contains no sensitive data.
+
+If you're using Heroku, you can set these by using `heroku config:set BRAINTREE_ENVIRONMENT=sandbox`. If you're not using Heroku, then the process is a little more difficult.
+
+To make it work on a non-Heroku server, you can use `dotenv-rails` which loads environment variables automatically from a `.env` file in your application. The `.env` file that contains the production credentials would be hosted on your production server and copied over upon deployment, just like your `database.yml`. 
+
 ## Conclusion
 
 Braintree provides a lot more than just this simple transaction processing. It also handles subscriptions and securely storing user's credentials so that they can re-use them on subsequent checkouts.
